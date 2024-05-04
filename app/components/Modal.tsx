@@ -8,5 +8,9 @@ export default forwardRef<HTMLDialogElement, ModalRef>(function Modal(
   { children },
   ref
 ) {
-  return <dialog ref={ref}>{children}</dialog>;
+  return (
+    <dialog className="w-[500px] rounded-md p-5 transition-all" ref={ref}>
+      {children}
+    </dialog>
+  );
 });
