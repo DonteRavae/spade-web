@@ -8,7 +8,11 @@ export type UserProfile = {
 export type GraphQLResponse = {
   success: boolean;
   message?: string;
-  payload?: UserProfile;
+  payload?: UserProfile | ExpressionPost | Reply | ExpressionPostAggregate;
+};
+
+export type ExpressionPostAggregate = {
+  posts: ExpressionPost[];
 };
 
 export type ExpressionPost = {

@@ -16,10 +16,10 @@ import ApplicationHeader from "./containers/ApplicationHeader";
 import PodcastOverview from "./containers/PodcastOverview";
 // STYLES
 import styles from "./tailwind.css?url";
-import { getUserProfile } from "./graphql/queries.server";
-import { loginUser, registerUser } from "./graphql/mutations.server";
+import { getUserProfile } from "./graphql/community/queries.server";
+import { loginUser, registerUser } from "./graphql/auth/mutations.server";
 import { GraphQLClientResponse } from "../node_modules/graphql-request/build/esm/types";
-import { GraphQLResponse } from "./lib/types";
+import { GraphQLResponse, UserProfile } from "./lib/types";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -47,6 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       email as string,
       password as string
     )) as GraphQLClientResponse<GraphQLResponse>;
+
     return json(
       { data: data.login },
       {
@@ -65,8 +66,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { data } = await getUserProfile(request.headers);
-  const res = data.getUserProfile;
-  const profile = res.payload;
+  const res = data.getLoggedInUserProfile;
+  console.log(res);
+  const profile = res.payload as UserProfile;
   return json({ profile });
 };
 

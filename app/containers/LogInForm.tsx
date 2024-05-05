@@ -114,7 +114,6 @@ export default function LogInForm({
         handleChange={handlePasswordChange}
       />
 
-      <input type="hidden" name="request-type" value="login-request" />
       <footer className="h-auto w-full flex flex-col text-center gap-5">
         <p>
           By continuing, you agree to our User Agreement and acknowledge that
@@ -123,6 +122,8 @@ export default function LogInForm({
         <button
           className="flex flex-auto h-12 items-center justify-center gap-3 cursor-pointer bg-purple-900 hover:bg-purple-700 text-white rounded-full"
           type="submit"
+          name="requestType"
+          value="login-request"
         >
           {state === "submitting" ? (
             <SpinnerCircular size={30} color="white" />

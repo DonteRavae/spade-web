@@ -5,7 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-export default function AccountDropdown({ profile }: { profile: UserProfile }) {
+export default function AccountDropdown({
+  profile,
+}: {
+  profile: UserProfile;
+}) {
   const { username, avatar } = profile;
   const [showMenu, setShowMenu] = useState<boolean>(false);
 

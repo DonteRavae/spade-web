@@ -31,7 +31,10 @@ export default function UserAuthAccess() {
           </button>
         </header>
         {authForm === "login" ? (
-          <LogInForm changeForm={() => setAuthForm("register")} />
+          <LogInForm
+            closeForm={exitModal}
+            changeForm={() => setAuthForm("register")}
+          />
         ) : (
           <SignUpForm
             closeForm={exitModal}

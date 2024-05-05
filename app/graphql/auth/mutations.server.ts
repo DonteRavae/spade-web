@@ -1,5 +1,7 @@
+// EXTERNAL
 import { GraphQLClient, gql } from "graphql-request";
-import { GraphQLResponse } from "../lib/types";
+// INTERNAL
+import { GraphQLResponse } from "../../lib/types";
 
 export const registerUser = async (
   username: string,
@@ -18,7 +20,7 @@ export const registerUser = async (
           register(registration: $request) {
             success
             message
-            status_code
+            statusCode
           }
         }
       `,
@@ -35,10 +37,7 @@ export const registerUser = async (
   }
 };
 
-export const loginUser= async (
-  email: string,
-  password: string
-) => {
+export const loginUser = async (email: string, password: string) => {
   try {
     const AuthClient = new GraphQLClient("http://localhost:8000/auth", {
       credentials: "include",
@@ -48,10 +47,10 @@ export const loginUser= async (
     return await AuthClient.rawRequest<GraphQLResponse>(
       gql`
         mutation LoginAuth($request: AuthAccessRequest!) {
-          register(credentials: $request) {
+          login(credentials: $request) {
             success
             message
-            status_code
+            statusCode
           }
         }
       `,

@@ -1,6 +1,7 @@
+// EXTERNAL
 import { GraphQLClient, gql } from "graphql-request";
-// import { CommunityClient } from "./client.server";
-import { UserProfile } from "../lib/types";
+// INTERNAL
+import { UserProfile } from "../../lib/types";
 
 export const getUserProfile = async (headers: Headers) => {
   const CommunityClient = new GraphQLClient("http://localhost:8000/community", {
@@ -11,8 +12,8 @@ export const getUserProfile = async (headers: Headers) => {
 
   return await CommunityClient.rawRequest<UserProfile>(
     gql`
-      query GetUserProfile {
-        getUserProfile {
+      query GetLoggedInUserProfile {
+        getLoggedInUserProfile {
           success
           message
           payload {
