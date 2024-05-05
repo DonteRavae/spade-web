@@ -17,9 +17,9 @@ import PodcastOverview from "./containers/PodcastOverview";
 // STYLES
 import styles from "./tailwind.css?url";
 import { getUserProfile } from "./graphql/queries.server";
-import { registerUser } from "./graphql/mutations.server";
-import { AuthResponse } from "./lib/types";
+import { loginUser, registerUser } from "./graphql/mutations.server";
 import { GraphQLClientResponse } from "../node_modules/graphql-request/build/esm/types";
+import { GraphQLResponse } from "./lib/types";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -32,9 +32,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       username as string,
       email as string,
       password as string
-    )) as GraphQLClientResponse<AuthResponse>;
+    )) as GraphQLClientResponse<GraphQLResponse>;
     return json(
       { data: data.register },
+      {
+        headers: {
+          "set-cookie": headers.get("set-cookie") || "",
+        },
+      }
+    );
+  } else if (formData.requestType === "login-request") {
+    const { email, password } = formData;
+    const { data, headers } = (await loginUser(
+      email as string,
+      password as string
+    )) as GraphQLClientResponse<GraphQLResponse>;
+    return json(
+      { data: data.login },
       {
         headers: {
           "set-cookie": headers.get("set-cookie") || "",

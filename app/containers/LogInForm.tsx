@@ -1,20 +1,26 @@
-import { Form, useFetcher } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
 import { SpinnerCircular } from "spinners-react";
 import FormInput from "../components/FormInput";
 import { useState, useRef, useEffect, ChangeEventHandler } from "react";
 
-export default function LogInForm({ changeForm }: { changeForm: () => void }) {
-  const { formData } = useFetcher();
+export default function LogInForm({
+  changeForm,
+  closeForm,
+}: {
+  changeForm: () => void;
+  closeForm: () => void;
+}) {
+  const { Form, state, data } = useFetcher();
+
   const [pwd, setPwd] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [errMsg, setErrMsg] = useState<string>("");
   const [, setEmailFocus] = useState<boolean>(false);
 
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const errorRef = useRef<HTMLParagraphElement | null>(null);
+  const [errMsg, setErrMsg] = useState<string>("");
 
-  const isEmailLoginSubmitting =
-    formData?.get("request-type") === "login-request";
+  const formRef = useRef<HTMLFormElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const errorRef = useRef<HTMLParagraphElement>(null);
 
   // Focus email input on load
   useEffect(() => {
@@ -25,6 +31,19 @@ export default function LogInForm({ changeForm }: { changeForm: () => void }) {
   useEffect(() => {
     setErrMsg("");
   }, [email, pwd, setErrMsg]);
+
+  useEffect(() => {
+    if (data) {
+      const { success, message } = data.data;
+      if (success) {
+        closeForm();
+        formRef.current?.reset();
+      } else {
+        console.error(message);
+        setErrMsg(message);
+      }
+    }
+  }, [data, closeForm]);
 
   // HANDLERS
   const handleEmailChange: ChangeEventHandler<HTMLInputElement> = (event) =>
@@ -40,6 +59,7 @@ export default function LogInForm({ changeForm }: { changeForm: () => void }) {
     <Form
       method="post"
       id="login-form"
+      ref={formRef}
       className="flex p-5 flex-col items-center gap-10 rounded-md"
     >
       <header className="text-center">
@@ -104,7 +124,7 @@ export default function LogInForm({ changeForm }: { changeForm: () => void }) {
           className="flex flex-auto h-12 items-center justify-center gap-3 cursor-pointer bg-purple-900 hover:bg-purple-700 text-white rounded-full"
           type="submit"
         >
-          {isEmailLoginSubmitting ? (
+          {state === "submitting" ? (
             <SpinnerCircular size={30} color="white" />
           ) : (
             "Log In"

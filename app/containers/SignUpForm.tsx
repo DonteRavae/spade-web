@@ -20,9 +20,9 @@ export default function SignUpForm({
   const { Form, state, data } = useFetcher();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const usernameRef = useRef<HTMLInputElement | null>(null);
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const errorRef = useRef<HTMLParagraphElement | null>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const errorRef = useRef<HTMLParagraphElement>(null);
 
   const [errMsg, setErrMsg] = useState<string>("");
 
@@ -70,6 +70,7 @@ export default function SignUpForm({
         formRef.current?.reset();
       } else {
         console.error(message);
+        setErrMsg(message);
       }
     }
   }, [data, closeForm]);
