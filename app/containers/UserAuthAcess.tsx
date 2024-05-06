@@ -10,7 +10,10 @@ export default function UserAuthAccess() {
   const [authForm, setAuthForm] = useState<"login" | "register">("login");
 
   const openModal = () => modalRef.current?.showModal();
-  const exitModal = () => modalRef.current?.close();
+  const exitModal = () => {
+    modalRef.current?.close();
+    setAuthForm("login");
+  };
 
   return (
     <>
