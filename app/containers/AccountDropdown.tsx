@@ -30,6 +30,7 @@ export default function AccountDropdown({ profile }: { profile: UserProfile }) {
           <Link
             className="flex-auto py-2 px-3 text-white hover:bg-white hover:text-black text-left"
             to={`/users/${username}`}
+            reloadDocument
           >
             My Profile
           </Link>
