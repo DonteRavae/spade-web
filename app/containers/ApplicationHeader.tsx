@@ -10,7 +10,7 @@ export default function ApplicationHeader() {
       <Link to="/" className="h-full">
         <img
           className="h-full"
-          src="assets/logo_trans_horizontal.png"
+          src="/assets/logo_trans_horizontal.png"
           alt="SPADE Mental Health Logo"
         />
       </Link>
