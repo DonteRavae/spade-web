@@ -5,11 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-export default function AccountDropdown({
-  profile,
-}: {
-  profile: UserProfile;
-}) {
+export default function AccountDropdown({ profile }: { profile: UserProfile }) {
   const { username, avatar } = profile;
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
@@ -26,21 +22,20 @@ export default function AccountDropdown({
         <FontAwesomeIcon icon={faCaretDown} className="h-5" color="black" />
       </button>
       <menu
-        className={`w-full m-0 absolute top-[60px] right-0 p-0 shadow-2xl rounded-md ${
-          showMenu ? "block bg-black z-10" : "hidden"
+        className={`w-full block m-0 absolute top-[60px] p-0 shadow-2xl rounded-md ${
+          showMenu ? "bg-black z-10 right-0" : "right-[9999px]"
         }`}
-        onBlur={handleClick}
       >
-        <li className="h-full w-full min-h-10">
+        <li className="flex w-full items-center h-10">
           <Link
-            className="h-full w-full text-white hover:bg-white hover:text-black text-left"
-            to={`/user/${username}`}
+            className="flex-auto py-2 px-3 text-white hover:bg-white hover:text-black text-left"
+            to={`/users/${username}`}
           >
             My Profile
           </Link>
         </li>
-        <li className="h-full w-full min-h-10">
-          <Form method="post">
+        <li className="flex h-10">
+          <Form method="post" className="flex-auto">
             <button className="w-full py-2 px-3 text-white hover:bg-white hover:text-black text-left">
               Log Out
             </button>
