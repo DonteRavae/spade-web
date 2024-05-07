@@ -5,9 +5,10 @@ import AccountDropdown from "./AccountDropdown";
 
 export default function ApplicationHeader() {
   const { profile } = useLoaderData<typeof loader>();
+
   return (
-    <header className="grid grid-cols-[auto_1fr_15%] grid-rows-1 items-center col-span-full border-b px-5">
-      <Link to="/" className="h-full">
+    <header className="grid grid-cols-[135px_1fr_15%] grid-rows-1 items-center col-span-full border-b px-5">
+      <Link to="/" className="h-full" reloadDocument>
         <img
           className="h-full"
           src="/assets/logo_trans_horizontal.png"
