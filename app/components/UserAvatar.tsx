@@ -7,7 +7,7 @@ export default function UserAvatar({
 }) {
   return (
     <img
-      className="h-3/4 w-auto rounded-full text-center cursor-pointer"
+      className="h-full w-auto rounded-full text-center cursor-pointer"
       src={avatarUrl}
       alt={`${username}'s avatar`}
     />
