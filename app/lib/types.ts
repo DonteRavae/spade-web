@@ -1,4 +1,5 @@
 export type UserProfile = {
+  [key: string]: string | string[];
   id: string;
   username: string;
   avatar: string;
@@ -6,6 +7,14 @@ export type UserProfile = {
 };
 
 export type GraphQLResponse = {
+  [key: string]:
+    | boolean
+    | string
+    | UserProfile
+    | ExpressionPost
+    | Reply
+    | ExpressionPostAggregate
+    | undefined;
   success: boolean;
   message?: string;
   payload?: UserProfile | ExpressionPost | Reply | ExpressionPostAggregate;
