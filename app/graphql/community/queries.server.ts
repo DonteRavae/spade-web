@@ -1,7 +1,7 @@
 // EXTERNAL
 import { GraphQLClient, gql } from "graphql-request";
 // INTERNAL
-import { UserProfile } from "../../lib/types";
+import { GraphQLResponse } from "../../lib/types";
 
 export const getUserProfile = async (headers: Headers) => {
   const CommunityClient = new GraphQLClient("http://localhost:8000/community", {
@@ -10,7 +10,7 @@ export const getUserProfile = async (headers: Headers) => {
     headers,
   });
 
-  return await CommunityClient.rawRequest<UserProfile>(
+  return await CommunityClient.rawRequest<GraphQLResponse>(
     gql`
       query GetLoggedInUserProfile {
         getLoggedInUserProfile {
@@ -24,5 +24,5 @@ export const getUserProfile = async (headers: Headers) => {
         }
       }
     `
-  );
+  ).then(({ data }) => data.getLoggedInUserProfile);
 };
