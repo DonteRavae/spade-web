@@ -12,64 +12,43 @@ import {
   json,
 } from "@remix-run/node";
 // INTERNAL
+import {
+  GetUserProfileHandler,
+  LogInUserHandler,
+  LogOutUserProfile,
+  RegisterUserHandler,
+} from "./handlers/root.server";
 import ApplicationHeader from "./containers/ApplicationHeader";
 import PodcastOverview from "./containers/PodcastOverview";
 // STYLES
 import styles from "./tailwind.css?url";
-import { getUserProfile } from "./graphql/community/queries.server";
-import { loginUser, registerUser } from "./graphql/auth/mutations.server";
-import { GraphQLClientResponse } from "../node_modules/graphql-request/build/esm/types";
-import { GraphQLResponse, UserProfile } from "./lib/types";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = Object.fromEntries(await request.formData());
 
-  if (formData.requestType === "registration-request") {
-    const { username, email, password } = formData;
-    const { data, headers } = (await registerUser(
-      username as string,
-      email as string,
-      password as string
-    )) as GraphQLClientResponse<GraphQLResponse>;
-    return json(
-      { data: data.register },
-      {
-        headers: {
-          "set-cookie": headers.get("set-cookie") || "",
-        },
-      }
-    );
-  } else if (formData.requestType === "login-request") {
-    const { email, password } = formData;
-    const { data, headers } = (await loginUser(
-      email as string,
-      password as string
-    )) as GraphQLClientResponse<GraphQLResponse>;
+  switch (formData.requestType) {
+    case "registration-rquest": {
+      return await RegisterUserHandler(formData);
+    }
 
-    return json(
-      { data: data.login },
-      {
-        headers: {
-          "set-cookie": headers.get("set-cookie") || "",
-        },
-      }
-    );
+    case "login-request": {
+      return await LogInUserHandler(formData);
+    }
+    case "logout-request": {
+      return await LogOutUserProfile(request.headers);
+    }
+    default:
+      return json({
+        success: false,
+        message: "Request type handler does not exist",
+      });
   }
-
-  return json({
-    success: false,
-    message: "Request type handler does not exist",
-  });
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { data } = await getUserProfile(request.headers);
-  const res = data.getLoggedInUserProfile;
-  console.log(res);
-  const profile = res.payload as UserProfile;
-  return json({ profile });
+  return await GetUserProfileHandler(request.headers);
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
