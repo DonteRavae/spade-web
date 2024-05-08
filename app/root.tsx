@@ -29,16 +29,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = Object.fromEntries(await request.formData());
 
   switch (formData.requestType) {
-    case "registration-rquest": {
+    case "registration-request":
       return await RegisterUserHandler(formData);
-    }
 
-    case "login-request": {
+    case "login-request":
       return await LogInUserHandler(formData);
-    }
-    case "logout-request": {
+    case "logout-request":
       return await LogOutUserProfile(request.headers);
-    }
     default:
       return json({
         success: false,
