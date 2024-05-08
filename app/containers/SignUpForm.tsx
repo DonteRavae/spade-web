@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, ChangeEventHandler } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useFetcher } from "@remix-run/react";
+import { GraphQLResponse } from "../lib/types";
 
 // eslint-disable-next-line no-useless-escape
 const EMAIL_VALIDATION = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/;
@@ -64,13 +65,13 @@ export default function SignUpForm({
 
   useEffect(() => {
     if (data) {
-      const { success, message } = data.data;
+      const { success, message } = data as GraphQLResponse;
       if (success) {
         closeForm();
         formRef.current?.reset();
       } else {
         console.error(message);
-        setErrMsg(message);
+        setErrMsg(message!);
       }
     }
   }, [data, closeForm]);
@@ -262,6 +263,7 @@ export default function SignUpForm({
           type="submit"
           name="requestType"
           value="registration-request"
+          disabled={!validEmail || !validPwd || !validMatch}
         >
           {state === "submitting" ? (
             <SpinnerCircular size={30} color="white" />

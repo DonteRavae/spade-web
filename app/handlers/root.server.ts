@@ -1,5 +1,4 @@
 import { json } from "@remix-run/node";
-import { GraphQLClientResponse } from "../../node_modules/graphql-request/build/esm/types";
 import { loginUser, registerUser } from "../graphql/auth/mutations.server";
 import { GraphQLResponse, UserProfile } from "../lib/types";
 import { getUserProfile } from "../graphql/community/queries.server";
@@ -19,13 +18,14 @@ export const RegisterUserHandler = async (formData: {
   [k: string]: FormDataEntryValue;
 }) => {
   const { username, email, password } = formData;
-  const { data, headers } = (await registerUser(
+  const { data, headers } = await registerUser(
     username as string,
     email as string,
     password as string
-  )) as GraphQLClientResponse<GraphQLResponse>;
+  );
+
   return json(
-    { data: data.register },
+    { data },
     {
       headers: {
         "set-cookie": headers.get("set-cookie") || "",
@@ -38,13 +38,13 @@ export const LogInUserHandler = async (formData: {
   [k: string]: FormDataEntryValue;
 }) => {
   const { email, password } = formData;
-  const { data, headers } = (await loginUser(
+  const { data, headers } = await loginUser(
     email as string,
     password as string
-  )) as GraphQLClientResponse<GraphQLResponse>;
+  );
 
   return json(
-    { data: data.login },
+    { data },
     {
       headers: {
         "set-cookie": headers.get("set-cookie") || "",

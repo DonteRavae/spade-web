@@ -2,6 +2,7 @@ import { useFetcher } from "@remix-run/react";
 import { SpinnerCircular } from "spinners-react";
 import FormInput from "../components/FormInput";
 import { useState, useRef, useEffect, ChangeEventHandler } from "react";
+import { GraphQLResponse } from "../lib/types";
 
 export default function LogInForm({
   changeForm,
@@ -34,13 +35,13 @@ export default function LogInForm({
 
   useEffect(() => {
     if (data) {
-      const { success, message } = data.data;
+      const { success, message } = data as GraphQLResponse;
       if (success) {
         closeForm();
         formRef.current?.reset();
       } else {
         console.error(message);
-        setErrMsg(message);
+        setErrMsg(message!);
       }
     }
   }, [data, closeForm]);
