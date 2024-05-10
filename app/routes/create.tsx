@@ -1,5 +1,10 @@
+import CreatePostForm from "../containers/CreatePostForm";
 import PageContainer from "../containers/PageContainer";
 
 export default function CreatePostPage() {
-  return <PageContainer>Create Post Page</PageContainer>;
+  return (
+    <PageContainer>
+      <CreatePostForm />
+    </PageContainer>
+  );
 }
