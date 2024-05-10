@@ -9,6 +9,7 @@ import {
   faArrowRightToBracket,
   faCaretDown,
   faGear,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
@@ -37,11 +38,20 @@ export default function AccountDropdown({ profile }: { profile: UserProfile }) {
           <Link
             className="h-full flex items-center flex-auto gap-2 p-3 text-white hover:bg-white hover:text-black text-left"
             onClick={handleClick}
-            onBlur={handleClick}
             to={`/users/${username}`}
           >
             <UserAvatar username={username} avatarUrl={avatar} />
             My Profile
+          </Link>
+        </li>
+        <li className="flex w-full items-center h-12">
+          <Link
+            className="h-full flex items-center flex-auto gap-2 p-3 text-white hover:bg-white hover:text-black text-left"
+            onClick={handleClick}
+            to={`/create`}
+          >
+            <FontAwesomeIcon icon={faPlus} className="h-4 w-6" />
+            Create Post
           </Link>
         </li>
         <li className="flex w-full items-center h-12">
@@ -73,7 +83,7 @@ export default function AccountDropdown({ profile }: { profile: UserProfile }) {
       </menu>
       <div
         className={
-          showMenu ? "block fixed top-0 right-0 left-0 bottom-0 z-10" : "hidden"
+          showMenu ? "block fixed top-0 right-0 left-0 bottom-0 z-10" : "hidden -z-10"
         }
         onClick={handleClick}
       />
